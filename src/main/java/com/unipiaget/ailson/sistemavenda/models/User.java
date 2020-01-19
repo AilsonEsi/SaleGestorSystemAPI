@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Data;
@@ -41,6 +42,9 @@ public class User implements Serializable {
 
     @Column(name = "PASSWORD")
     private String password;
+    
+    @OneToOne(mappedBy = "user")
+    private Employee employee;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_ROLES",
