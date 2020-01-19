@@ -36,7 +36,9 @@ public class Sale {
     @Column(name = "ID")
     private int id;
 
+    @Column(name = "sale_total")
     private float saleTotal;
+
     @DateTimeFormat(pattern = "dd/MM/yyyy", iso = DateTimeFormat.ISO.DATE)
     private Date saleDate;
 
