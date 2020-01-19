@@ -23,13 +23,14 @@ import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.format.annotation.NumberFormat;
 
 /**
  *
  * @author programmer
  */
 @Entity
-@Table(name = "products", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "products", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "code"}))
 @Data
 public class Product {
 
@@ -38,7 +39,11 @@ public class Product {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "CODE", unique = true)
+    @NumberFormat
+    private int code;
+
+    @Column(name = "NAME", nullable = false, unique = true)
     @UniqueElements(message = "name already exist in database")
     @Length(min = 1, max = 255, message = "lenght min 1 max 255 characters")
     private String name;

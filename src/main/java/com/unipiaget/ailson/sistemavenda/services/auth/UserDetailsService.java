@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.unipiaget.ailson.sistemavenda.services;
+package com.unipiaget.ailson.sistemavenda.services.auth;
 
 import com.unipiaget.ailson.sistemavenda.models.User;
 import com.unipiaget.ailson.sistemavenda.repositories.UserRepository;

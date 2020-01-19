@@ -5,27 +5,29 @@
  */
 package com.unipiaget.ailson.sistemavenda.services;
 
-import com.unipiaget.ailson.sistemavenda.models.Sale;
-import com.unipiaget.ailson.sistemavenda.repositories.SaleRepository;
+import com.unipiaget.ailson.sistemavenda.models.Client;
+import com.unipiaget.ailson.sistemavenda.repositories.ClientRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author programmer
  */
 @Service
-public class SaleService {
+public class ClientService {
 
     @Autowired
-    private SaleRepository sr;
+    private ClientRepository cr;
 
-    public void save(Sale s) {
-        sr.save(s);
+    @Transactional
+    public void save(Client c) {
+        cr.save(c);
     }
 
-    public List<Sale> findAll() {
-        return sr.findAll();
+    public List<Client> findAll() {
+        return cr.findAll();
     }
 }

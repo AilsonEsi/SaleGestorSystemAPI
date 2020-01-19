@@ -5,7 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.security.jwt;
 
-import com.unipiaget.ailson.sistemavenda.services.UserDetailsPrinciple;
+import com.unipiaget.ailson.sistemavenda.services.auth.UserDetailsPrinciple;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

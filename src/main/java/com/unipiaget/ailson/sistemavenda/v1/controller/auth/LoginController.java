@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.unipiaget.ailson.sistemavenda.v1.controller;
+package com.unipiaget.ailson.sistemavenda.v1.controller.auth;
 
 import com.unipiaget.ailson.sistemavenda.message.request.LoginForm;
 import com.unipiaget.ailson.sistemavenda.message.response.JwtTokenResponse;
@@ -34,9 +34,6 @@ public class LoginController {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
