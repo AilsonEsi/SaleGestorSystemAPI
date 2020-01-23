@@ -57,4 +57,8 @@ public class Contact implements Serializable {
     @JsonIgnoreProperties("contact")
     private Supplier supplier;
 
+    @OneToOne(mappedBy = "contact")
+    @JsonIgnoreProperties("contact")
+    private CompanyConfig companyConfig;
+
 }

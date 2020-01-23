@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author programmer
  */
 @RestController("CategoryController")
-@RequestMapping("v1/category")
+@RequestMapping("v1/categories")
 public class CategoryController {
 
     @Autowired

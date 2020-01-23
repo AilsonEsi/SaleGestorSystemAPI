@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author programmer
  */
 @RestController("ProductController")
-@RequestMapping("v1/product")
+@RequestMapping("v1/products")
 @CrossOrigin(origins = "**")
 public class ProductController {
 

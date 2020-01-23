@@ -6,9 +6,8 @@
 package com.unipiaget.ailson.sistemavenda.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,46 +16,39 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
  * @author programmer
  */
 @Entity
-@Table(name = "clients")
+@Table(name = "company_configs")
 @Data
-@ToString(exclude = {"sales"})
-@JsonDeserialize(as = Client.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Client implements Serializable {
+public class CompanyConfig implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
-
-    @Column(name = "NAME", nullable = false)
-    @Length(min = 1, max = 255, message = "lenght min 1 max 255 characters")
+    @Column(name = "NAME")
+    @Length(min = 1, max = 255)
     private String name;
+    private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_id", referencedColumnName = "ID")
-    @JsonIgnoreProperties("client")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")
+    @JsonIgnoreProperties("companyConfig")
     private Contact contact;
 
-    @Column(name = "BI")
-    @NumberFormat
-    private int bi;
+    private String directorName;
+    private String logoURL;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    @JsonIgnoreProperties("client")
-    private List<Sale> sales;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date foundation;
 
 }
