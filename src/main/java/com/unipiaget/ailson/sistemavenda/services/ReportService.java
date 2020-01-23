@@ -5,6 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.services;
 
+import java.io.OutputStream;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,5 +14,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReportService {
-    
+
+    public OutputStream generateDeliveryOrderReport() {
+        return null;
+    }
+
 }

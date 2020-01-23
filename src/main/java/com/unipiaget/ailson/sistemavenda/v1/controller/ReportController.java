@@ -5,6 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.v1.controller;
 
+import com.unipiaget.ailson.sistemavenda.services.ReportService;
 import com.unipiaget.ailson.sistemavenda.services.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("ReportController")
 @RequestMapping("v1/report")
 public class ReportController {
-    
+
     @Autowired
     private SaleService ss;
-    
-    @GetMapping(value = "/sale/{id}")
-    public ResponseEntity<?> saleReport(@PathVariable("id") int id) {
-        return new ResponseEntity(HttpStatus.OK);
+
+    @Autowired
+    private ReportService rs;
+
+    @GetMapping(value = "/delivery_order/{id}")
+    public ResponseEntity<?> deliveryOrderReport(@PathVariable("id") int id) {
+
+        return new ResponseEntity<>(rs.generateDeliveryOrderReport(), HttpStatus.OK);
     }
 }
