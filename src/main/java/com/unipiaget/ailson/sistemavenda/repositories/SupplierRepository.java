@@ -7,11 +7,13 @@ package com.unipiaget.ailson.sistemavenda.repositories;
 
 import com.unipiaget.ailson.sistemavenda.models.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author programmer
  */
+@Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
 
 }
