@@ -5,6 +5,9 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -25,7 +29,10 @@ import org.springframework.format.annotation.NumberFormat;
 @Entity
 @Table(name = "produts_buy_details")
 @Data
-public class ProductBuyDetails {
+@ToString(exclude = {"product"})
+@JsonDeserialize(as = ProductBuyDetails.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class ProductBuyDetails implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,10 +53,11 @@ public class ProductBuyDetails {
     @Column(name = "OBS")
     private String obs;
 
-    @Column(name = "UNIT_SALE_PRICE")
-    private float unitSalePrice;
+    @Column(name = "UNIT_BUY_PRICE")
+    private float unitBuyPrice;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "productBuyDetails")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "buyDetails")
+    @JsonIgnoreProperties("product")
     private Product product;
 
 }

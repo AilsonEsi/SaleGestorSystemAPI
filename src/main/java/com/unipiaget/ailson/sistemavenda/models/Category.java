@@ -5,6 +5,9 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,31 +16,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.UniqueElements;
 
 /**
  *
  * @author programmer
  */
 @Entity
-@Table(name = "categories",
-        uniqueConstraints = @UniqueConstraint(columnNames = "name")
-)
+@Table(name = "categories")
 @Data
-public class Category {
+@ToString(exclude = {"produts"})
+@JsonDeserialize(as = Category.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(name = "NAME", nullable = false, unique = true)
-    @UniqueElements(message = "name already exist in database")
     @Length(min = 1, max = 255, message = "lenght min 1 max 255 characters")
     private String name;
-    
+
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnoreProperties("categories")
     private List<Product> produts;
 }

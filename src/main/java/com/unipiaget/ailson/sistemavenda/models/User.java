@@ -5,6 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import lombok.Data;
+import lombok.ToString;
 
 /**
  *
@@ -28,6 +29,7 @@ import lombok.Data;
  */
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
+@ToString(exclude = {"employee"})
 public class User implements Serializable {
 
     @Id
@@ -42,8 +44,9 @@ public class User implements Serializable {
 
     @Column(name = "PASSWORD")
     private String password;
-    
+
     @OneToOne(mappedBy = "user")
+    @JsonIgnoreProperties("user")
     private Employee employee;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -100,6 +103,14 @@ public class User implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
 }

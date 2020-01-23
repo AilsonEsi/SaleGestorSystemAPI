@@ -5,6 +5,10 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,19 +21,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.UniqueElements;
 
 /**
  *
  * @author programmer
  */
 @Entity
-@Table(name = "employees", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "employees")
 @Data
-public class Employee {
+@ToString(exclude = {"contact", "user", "sales"})
+@JsonDeserialize(as = Employee.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,19 +43,21 @@ public class Employee {
     private int id;
 
     @Column(name = "NAME", nullable = false, unique = true)
-    @UniqueElements(message = "name already exist in database")
     @Length(min = 1, max = 255, message = "lenght min 1 max 255 characters")
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "ID")
+    @JsonIgnoreProperties("employee")
     private Contact contact;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JsonIgnoreProperties("employee")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    @JsonIgnoreProperties("employee")
     private List<Sale> sales;
 
 }

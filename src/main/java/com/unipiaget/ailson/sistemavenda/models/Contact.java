@@ -5,6 +5,9 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  *
@@ -22,7 +26,10 @@ import lombok.Data;
 @Entity
 @Table(name = "contacts")
 @Data
-public class Contact {
+@ToString(exclude = {"client", "employee", "supplier"})
+@JsonDeserialize(as = Contact.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Contact implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +46,15 @@ public class Contact {
     private String email;
 
     @OneToOne(mappedBy = "contact")
+    @JsonIgnoreProperties("contact")
     private Client client;
 
     @OneToOne(mappedBy = "contact")
+    @JsonIgnoreProperties("contact")
     private Employee employee;
 
     @OneToOne(mappedBy = "contact")
+    @JsonIgnoreProperties("contact")
     private Supplier supplier;
 
 }

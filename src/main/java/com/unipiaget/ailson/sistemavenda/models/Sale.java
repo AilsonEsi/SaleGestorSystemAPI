@@ -5,6 +5,10 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -20,6 +24,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -29,7 +34,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "sales")
 @Data
-public class Sale {
+@ToString(exclude = {"products","employee","client"})
+@JsonDeserialize(as = Sale.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Sale implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +56,17 @@ public class Sale {
             joinColumns = @JoinColumn(name = "SALE_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
     )
+    @JsonIgnoreProperties("sales")
     private List<Product> products;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "ID")
+    @JsonIgnoreProperties("sales")
     private Employee employee;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "ID")
+    @JsonIgnoreProperties("sales")
     private Client client;
 
 }

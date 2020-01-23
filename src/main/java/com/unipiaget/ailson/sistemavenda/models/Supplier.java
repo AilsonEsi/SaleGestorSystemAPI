@@ -5,6 +5,10 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -27,21 +32,25 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name = "suppliers")
 @Data
-public class Supplier {
+@ToString(exclude = {"products","contact"})
+@JsonDeserialize(as = Supplier.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Supplier implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
-    
+
     @Column(name = "NAME", nullable = false)
     @Length(min = 1, max = 255, message = "lenght min 1 max 255 characters")
     private String name;
-    
-    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier", fetch = FetchType.LAZY)
     private List<Product> products;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "ID")
+    @JsonIgnoreProperties("supplier")
     private Contact contact;
 }
