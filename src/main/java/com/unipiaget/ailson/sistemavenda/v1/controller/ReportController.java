@@ -37,7 +37,7 @@ public class ReportController {
     @RequestMapping(value = "/delivery_order/sale/{id}", method = RequestMethod.GET, produces = "application/pdf")
     public ResponseEntity<byte[]> deliveryOrderReport(@PathVariable("id") int id) {
 
-        byte[] pdf = rs.generateDeliveryOrderReport();
+        byte[] pdf = rs.generateDeliveryOrderReport(id);
         if (pdf != null) {
             return new ResponseEntity<>(pdf, HttpStatus.OK);
         } else {

@@ -5,14 +5,26 @@
  */
 package com.unipiaget.ailson.sistemavenda.services;
 
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.unipiaget.ailson.sistemavenda.models.Product;
+import com.unipiaget.ailson.sistemavenda.models.Sale;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,38 +36,111 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ReportService {
 
-    public byte[] generateDeliveryOrderReport() {
+    @Autowired
+    private SaleService ss;
+    
+    @Autowired
+    private CompanyConfigService ccs;
 
-        Document document = new Document(PageSize.A4, 60, 60, 45, 30);
-        try {
+    public byte[] generateDeliveryOrderReport(int saleId) {
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Sale s = ss.findById(saleId);
+        if (s != null) {
+            Document document = new Document(PageSize.A4, 60, 60, 45, 30);
+            try {
 
-            PdfWriter.getInstance(document, stream);
-            document.open();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-            Font font = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
-            Paragraph topTitulo;
-            topTitulo = new Paragraph("Ordem de Entrega", font);
+                PdfWriter.getInstance(document, stream);
+                document.open();
 
-            new Paragraph();
-            topTitulo.setAlignment(1);
-            document.add(topTitulo);
-            new Paragraph();
+                document.addTitle("Ordem de Entrega");
 
-            font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
-            Paragraph body = new Paragraph("Ailson Moreira", font);
-            body.setAlignment(body.ALIGN_JUSTIFIED);
-            document.add(body);
+                //body
+                Font font = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
 
-            document.close();
+                Paragraph topTitulo;
+                topTitulo = new Paragraph("Ordem de Entrega", font);
 
-            return stream.toByteArray();
+                new Paragraph();
+                topTitulo.setAlignment(1);
+                topTitulo.setSpacingAfter(30F);
+                document.add(topTitulo);
+                new Paragraph();
 
-        } catch (Exception e) {
-            return null;
+                font = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
 
+                //emmiter date
+                SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                String ed = "Data/Hora de Emissão: " + f.format(s.getSaleDate());
+                Paragraph emiterDate = new Paragraph(ed, font);
+                emiterDate.setAlignment(emiterDate.ALIGN_JUSTIFIED);
+                document.add(emiterDate);
+
+                //client info
+                String ci = "Cliente: " + s.getClient().getName();
+                Paragraph clientInfo = new Paragraph(ci, font);
+                clientInfo.setSpacingAfter(30F);
+                clientInfo.setAlignment(emiterDate.ALIGN_JUSTIFIED);
+                document.add(clientInfo);
+
+                //product list
+                PdfPTable table = new PdfPTable(5); // 3 columns.
+
+                PdfPCell cell1 = new PdfPCell(new Paragraph("Codigo"));
+                PdfPCell cell2 = new PdfPCell(new Paragraph("Nome Produto"));
+                PdfPCell cell3 = new PdfPCell(new Paragraph("Preco unit."));
+                PdfPCell cell4 = new PdfPCell(new Paragraph("Qty"));
+                PdfPCell cell5 = new PdfPCell(new Paragraph("Total"));
+
+                table.addCell(cell1);
+                table.addCell(cell2);
+                table.addCell(cell3);
+                table.addCell(cell4);
+                table.addCell(cell5);
+
+                for (Product p : s.getProducts()) {
+                    PdfPCell c = new PdfPCell(new Paragraph(String.valueOf(p.getCode())));
+                    table.addCell(c);
+                    PdfPCell n = new PdfPCell(new Paragraph(String.valueOf(p.getName())));
+                    table.addCell(n);
+                    PdfPCell pu = new PdfPCell(new Paragraph(String.valueOf(p.getUnitSalePrice())));
+                    table.addCell(pu);
+                    PdfPCell qt = new PdfPCell(new Paragraph("1"));
+                    table.addCell(qt);
+                    PdfPCell tt = new PdfPCell(new Paragraph("1000"));
+                    table.addCell(tt);
+                }
+                document.add(table);
+
+                //sign
+                Paragraph line = new Paragraph("______________________________________");
+                line.setSpacingBefore(140F);
+                line.setAlignment(emiterDate.ALIGN_CENTER);
+                document.add(line);
+
+                Paragraph sign = new Paragraph("Assinatura", font);
+                sign.setSpacingBefore(5F);
+                sign.setAlignment(emiterDate.ALIGN_CENTER);
+                document.add(sign);
+
+                //current date
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
+
+                String dt = "Data: " + sdf.format(new Date());
+                Paragraph d = new Paragraph(dt);
+                d.setSpacingBefore(70F);
+                d.setAlignment(d.ALIGN_JUSTIFIED);
+
+                document.add(d);
+
+                document.close();
+                return stream.toByteArray();
+
+            } catch (Exception e) {
+                return null;
+            }
         }
+        return null;
     }
-
 }
