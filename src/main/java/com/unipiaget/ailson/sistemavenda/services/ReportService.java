@@ -13,7 +13,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.unipiaget.ailson.sistemavenda.models.Product;
 import com.unipiaget.ailson.sistemavenda.models.Sale;
 import com.unipiaget.ailson.sistemavenda.models.SaleProductsDetails;
 import java.io.ByteArrayOutputStream;
@@ -40,6 +39,7 @@ public class ReportService {
     public byte[] generateDeliveryOrderReport(int saleId) {
 
         Sale s = ss.findById(saleId);
+        //check if the sale exist
         if (s != null) {
             Document document = new Document(PageSize.A4, 60, 60, 45, 30);
             try {
