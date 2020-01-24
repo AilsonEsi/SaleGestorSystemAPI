@@ -21,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -62,9 +63,8 @@ public class Product implements Serializable {
     @JsonIgnoreProperties("products")
     private Supplier supplier;
 
-    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("products")
-    private List<Sale> sales;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SaleProductsDetails> saleProductsDetails ;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "buy_details_id", referencedColumnName = "ID")

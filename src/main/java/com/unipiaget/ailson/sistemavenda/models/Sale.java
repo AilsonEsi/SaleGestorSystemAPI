@@ -21,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
@@ -33,10 +34,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "sales")
 @Data
-@ToString(exclude = {"products","employee","client"})
+@ToString(exclude = {"products", "employee", "client"})
 @JsonDeserialize(as = Sale.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Sale implements Serializable{
+public class Sale implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,14 +50,8 @@ public class Sale implements Serializable{
     @DateTimeFormat(pattern = "dd/MM/yyyy", iso = DateTimeFormat.ISO.DATE)
     private Date saleDate;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "sale_products",
-            joinColumns = @JoinColumn(name = "SALE_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
-    )
-    @JsonIgnoreProperties("sales")
-    private List<Product> products;
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SaleProductsDetails> saleProductsDetails;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "ID")

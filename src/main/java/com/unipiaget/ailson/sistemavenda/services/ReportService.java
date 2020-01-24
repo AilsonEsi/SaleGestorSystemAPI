@@ -5,6 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.services;
 
+import com.unipiaget.ailson.sistemavenda.utils.Calculator;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
@@ -14,6 +15,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.unipiaget.ailson.sistemavenda.models.Product;
 import com.unipiaget.ailson.sistemavenda.models.Sale;
+import com.unipiaget.ailson.sistemavenda.models.SaleProductsDetails;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +33,7 @@ public class ReportService {
 
     @Autowired
     private SaleService ss;
-    
+
     @Autowired
     private CompanyConfigService ccs;
 
@@ -92,16 +94,16 @@ public class ReportService {
                 table.addCell(cell4);
                 table.addCell(cell5);
 
-                for (Product p : s.getProducts()) {
-                    PdfPCell c = new PdfPCell(new Paragraph(String.valueOf(p.getCode())));
+                for (SaleProductsDetails p : s.getSaleProductsDetails()) {
+                    PdfPCell c = new PdfPCell(new Paragraph(String.valueOf(p.getProduct().getCode())));
                     table.addCell(c);
-                    PdfPCell n = new PdfPCell(new Paragraph(String.valueOf(p.getName())));
+                    PdfPCell n = new PdfPCell(new Paragraph(String.valueOf(p.getProduct().getName())));
                     table.addCell(n);
-                    PdfPCell pu = new PdfPCell(new Paragraph(String.valueOf(p.getUnitSalePrice())));
+                    PdfPCell pu = new PdfPCell(new Paragraph(String.valueOf(p.getProduct().getUnitSalePrice())));
                     table.addCell(pu);
-                    PdfPCell qt = new PdfPCell(new Paragraph("1"));
+                    PdfPCell qt = new PdfPCell(new Paragraph(String.valueOf(p.getQty())));
                     table.addCell(qt);
-                    PdfPCell tt = new PdfPCell(new Paragraph("1000"));
+                    PdfPCell tt = new PdfPCell(new Paragraph(String.valueOf(Calculator.calculate(p.getProduct().getUnitSalePrice(), p.getQty()))));
                     table.addCell(tt);
                 }
                 document.add(table);
