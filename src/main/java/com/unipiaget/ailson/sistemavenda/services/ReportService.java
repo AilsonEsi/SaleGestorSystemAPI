@@ -36,9 +36,9 @@ public class ReportService {
     @Autowired
     private CompanyConfigService ccs;
 
-    public byte[] generateDeliveryOrderReport(int saleId) {
+    public byte[] generateDeliveryOrderReport() {
 
-        Sale s = ss.findById(saleId);
+        Sale s = ss.findLastSale();
         //check if the sale exist
         if (s != null) {
             Document document = new Document(PageSize.A4, 60, 60, 45, 30);

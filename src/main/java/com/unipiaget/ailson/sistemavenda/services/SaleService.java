@@ -6,7 +6,9 @@
 package com.unipiaget.ailson.sistemavenda.services;
 
 import com.unipiaget.ailson.sistemavenda.models.Sale;
+import com.unipiaget.ailson.sistemavenda.models.SaleProductsDetails;
 import com.unipiaget.ailson.sistemavenda.repositories.SaleRepository;
+import com.unipiaget.ailson.sistemavenda.utils.Calculator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,9 @@ public class SaleService {
     private SaleRepository sr;
 
     public void save(Sale s) {
-        sr.save(s);
+
+        Sale newSale = Calculator.calculate(s);
+        sr.save(newSale);
     }
 
     public List<Sale> findAll() {
@@ -31,5 +35,9 @@ public class SaleService {
 
     public Sale findById(int id) {
         return sr.getOne(id);
+    }
+
+    public Sale findLastSale() {
+        return sr.findLastSale();
     }
 }

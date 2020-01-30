@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController("SupplierController")
 @RequestMapping(value = "v1/suppliers")
-@CrossOrigin(origins = "**")
+@CrossOrigin(origins = {"**", "http://localhost:4200"})
 public class SupplierController {
 
     @Autowired
