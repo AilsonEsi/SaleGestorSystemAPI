@@ -8,6 +8,7 @@ package com.unipiaget.ailson.sistemavenda.utils;
 import com.unipiaget.ailson.sistemavenda.models.Sale;
 import com.unipiaget.ailson.sistemavenda.models.SaleProductsDetails;
 import java.util.List;
+import org.jboss.logging.Logger;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class Calculator {
 
+    private static Logger l = Logger.getLogger(Calculator.class);
+    
     public static float calculate(float value, int qty) {
         return value * qty;
     }
@@ -26,9 +29,10 @@ public class Calculator {
 
         List<SaleProductsDetails> spd = s.getSaleProductsDetails();
         for (SaleProductsDetails data : s.getSaleProductsDetails()) {
-            total += data.getProduct().getUnitSalePrice() + data.getQty();
+            total += (data.getProduct().getUnitSalePrice() * data.getQty());
         }
-
+        
+        l.info(total);
         s.setSaleTotal(total);
         return s;
     }

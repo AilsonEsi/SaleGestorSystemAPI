@@ -5,8 +5,8 @@
  */
 package com.unipiaget.ailson.sistemavenda.services;
 
-import com.unipiaget.ailson.sistemavenda.models.Product;
-import com.unipiaget.ailson.sistemavenda.repositories.ProductRepository;
+import com.unipiaget.ailson.sistemavenda.models.SaleProductsDetails;
+import com.unipiaget.ailson.sistemavenda.repositories.SaleProductsDetailsRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,20 +16,17 @@ import org.springframework.stereotype.Service;
  * @author programmer
  */
 @Service
-public class ProductService {
+public class SaleProductsDetailsService {
 
     @Autowired
-    private ProductRepository pr;
+    private SaleProductsDetailsRepository spdr;
 
-    public void save(Product p) {
-        pr.save(p);
+    public void save(SaleProductsDetails spd) {
+        spdr.save(spd);
     }
 
-    public List<Product> findAll() {
-        return pr.findAll();
+    public List<SaleProductsDetails> findAll() {
+        return spdr.findAll();
     }
 
-    public Product findById(int id) {
-        return pr.findById(id).get();
-    }
 }

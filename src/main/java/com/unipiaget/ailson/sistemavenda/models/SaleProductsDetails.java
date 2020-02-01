@@ -7,15 +7,17 @@ package com.unipiaget.ailson.sistemavenda.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.Data;
 
 /**
@@ -24,6 +26,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@JsonDeserialize(as = SaleProductsDetails.class)
 public class SaleProductsDetails implements Serializable {
 
     @Id
@@ -31,15 +34,13 @@ public class SaleProductsDetails implements Serializable {
     private int id;
 
     @JoinColumn
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("saleProductsDetails")
-    @JsonIgnore
     private Sale sale;
 
     @JoinColumn
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("saleProductsDetails")
-    @JsonIgnore
     private Product product;
 
     @Column(name = "QTY")
