@@ -25,8 +25,8 @@ public class SaleService {
 
     public void save(Sale s) {
 
-        Sale newSale = Calculator.calculate(s);
-        sr.save(newSale);
+        Sale saleCalc = Calculator.calculate(s);
+        sr.save(saleCalc);
     }
 
     public List<Sale> findAll() {

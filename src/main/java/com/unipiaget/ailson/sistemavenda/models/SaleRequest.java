@@ -16,8 +16,8 @@ import lombok.Data;
 @Data
 public class SaleRequest {
 
-    private List<ProductQty> pq = new ArrayList<>();
-    private int empId;
-    private Client c;
+    private List<ProductQty> productQuantity = new ArrayList<>();
+    private int employeeId;
+    private int clientId;
 
 }

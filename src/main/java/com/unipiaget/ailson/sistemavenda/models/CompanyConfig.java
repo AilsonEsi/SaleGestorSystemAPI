@@ -5,6 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
@@ -42,13 +43,13 @@ public class CompanyConfig implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")
-    @JsonIgnoreProperties("companyConfig")
     private Contact contact;
 
     private String directorName;
     private String logoURL;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date foundation;
 
 }

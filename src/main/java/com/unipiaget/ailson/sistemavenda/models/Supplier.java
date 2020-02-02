@@ -51,6 +51,5 @@ public class Supplier implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "ID")
-    @JsonIgnoreProperties("supplier")
     private Contact contact;
 }

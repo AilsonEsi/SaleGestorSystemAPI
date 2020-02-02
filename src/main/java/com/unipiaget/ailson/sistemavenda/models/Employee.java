@@ -47,7 +47,6 @@ public class Employee implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "ID")
-    @JsonIgnoreProperties("employee")
     private Contact contact;
 
     @OneToOne(cascade = CascadeType.ALL)

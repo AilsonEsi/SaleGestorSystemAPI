@@ -5,6 +5,7 @@
  */
 package com.unipiaget.ailson.sistemavenda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
@@ -44,21 +45,4 @@ public class Contact implements Serializable {
     @Column(name = "EMAIL")
     @Email(message = "the email is invalid, please enter the valid email")
     private String email;
-
-    @OneToOne(mappedBy = "contact")
-    @JsonIgnoreProperties("contact")
-    private Client client;
-
-    @OneToOne(mappedBy = "contact")
-    @JsonIgnoreProperties("contact")
-    private Employee employee;
-
-    @OneToOne(mappedBy = "contact")
-    @JsonIgnoreProperties("contact")
-    private Supplier supplier;
-
-    @OneToOne(mappedBy = "contact")
-    @JsonIgnoreProperties("contact")
-    private CompanyConfig companyConfig;
-
 }

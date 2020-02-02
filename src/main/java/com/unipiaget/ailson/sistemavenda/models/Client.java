@@ -48,14 +48,13 @@ public class Client implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "ID")
-    @JsonIgnoreProperties("client")
     private Contact contact;
 
     @Column(name = "BI")
     @NumberFormat
     private int bi;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
     @JsonIgnoreProperties("client")
     private List<Sale> sales;
 

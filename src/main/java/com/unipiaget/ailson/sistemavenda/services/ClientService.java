@@ -8,6 +8,7 @@ package com.unipiaget.ailson.sistemavenda.services;
 import com.unipiaget.ailson.sistemavenda.models.Client;
 import com.unipiaget.ailson.sistemavenda.repositories.ClientRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +30,16 @@ public class ClientService {
 
     public List<Client> findAll() {
         return cr.findAll();
+    }
+
+    public Client findById(int id) {
+
+        Optional<Client> client = cr.findById(id);
+        Client c = null;
+        if (client.isPresent()) {
+            c = client.get();
+        }
+
+        return c;
     }
 }

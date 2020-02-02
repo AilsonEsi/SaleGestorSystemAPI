@@ -27,7 +27,6 @@ public class Calculator {
     public static Sale calculate(Sale s) {
         float total = 0F;
 
-        List<SaleProductsDetails> spd = s.getSaleProductsDetails();
         for (SaleProductsDetails data : s.getSaleProductsDetails()) {
             total += (data.getProduct().getUnitSalePrice() * data.getQty());
         }
